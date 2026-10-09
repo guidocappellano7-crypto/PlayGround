@@ -1,0 +1,44 @@
+╔══════════════════════════════════════════════════════════════╗
+║  ❄️  WHITEOUT SURVIVAL CLONE - PROMEMORIA SERVER PRIVATO  ❄️   ║
+╚══════════════════════════════════════════════════════════════╝
+
+👉 DOV'È IL TUO IP LOCALE?  (LO MODIFICHI SOLO TU QUI)
+
+1️⃣  FILE: js/config.js
+    ┌─────────────────────────────────────────────┐
+    │  const SERVER_IP = "192.168.1.100";  ◄── ✏️ CAMBIA QUI
+    │  const SERVER_PORT = 3001;
+    └─────────────────────────────────────────────┘
+
+2️⃣  FILE: server/CONFIG-IP.js   (stessa cosa lato server)
+    ┌─────────────────────────────────────────────┐
+    │  module.exports = { PORT: 3001 };  ◄── il server ascolta
+    │  su 0.0.0.0 così tutti i telefoni in WiFi lo vedono
+    └─────────────────────────────────────────────┘
+
+3️⃣  COME TROVI L'IP DEL TUO PC?
+    - Windows: apri CMD → scrivi  ipconfig  → cerca "Indirizzo IPv4"
+      Esempio: 192.168.1.50
+    - Linux:   terminale →  hostname -I
+    - Mac:     Impostazioni → Wi-Fi → Dettagli
+
+4️⃣  COME AVVII IL SERVER PRIVATO?
+    cd server
+    npm install
+    npm start
+    → vedrai:  ✅ Server attivo su http://192.168.1.XXX:3001
+
+5️⃣  COME COLLEGHI IL TELEFONO?
+    - PC e telefono sulla STESSA WiFi
+    - Sul gioco → icona ⚙️ IMPOSTAZIONI → scrivi l'IP → SALVA
+    - Il pallino diventa 🟢 ONLINE = collegato al tuo PC
+    - Se rosso 🔴 = gioca offline (salvataggio locale)
+
+6️⃣  LE STELLE DEL GELO INFINITO ⭐❄️
+    Valuta speciale del gioco (come i diamanti di Whiteout).
+    Le guadagni con missioni, tormenta sopravvissuta e classifica.
+    Servono per velocizzare costruzioni e comprare risorse.
+
+──────────────────────────────────────────────
+⚠️  RICORDA: cambia SOLO la riga SERVER_IP, il resto è automatico!
+──────────────────────────────────────────────

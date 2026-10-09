@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<title>❄️ Gelo Infinito — Whiteout Survival Clone 3D</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="scene"></div>
+
+<!-- RISORSE -->
+<div id="topbar">
+  <div class="res"><span class="ico">🪵</span><span><small>LEGNO</small><span id="r-legno">0</span></span></div>
+  <div class="res"><span class="ico">⬛</span><span><small>CARBONE</small><span id="r-carbone">0</span></span></div>
+  <div class="res"><span class="ico">🍖</span><span><small>CIBO</small><span id="r-cibo">0</span></span></div>
+  <div class="res"><span class="ico">🔩</span><span><small>FERRO</small><span id="r-ferro">0</span></span></div>
+  <div class="res frost"><span class="ico">⭐</span><span><small>GELO INFINITO</small><span id="r-frost">0</span></span></div>
+</div>
+
+<div id="statusrow">
+  <div id="temp">🌡️ <span id="tempval">-20°C</span><span class="bar"><span class="fill" id="tempfill" style="width:50%"></span></span></div>
+  <div id="serverdot" onclick="document.getElementById('m-settings').classList.add('open')"><span class="dot"></span> …</div>
+  <button id="btn-settings" onclick="document.getElementById('m-settings').classList.add('open')">⚙️</button>
+</div>
+
+<div id="quests"></div>
+<button id="btn-furnace">🔥<br>FORNACE<br><small>tocca</small></button>
+<div id="power"></div>
+<div id="blizzard"></div>
+<div id="hint">👆 Tocca un edificio per costruirlo · 🤏 Pizzica per zoomare · 🔥 Tieni accesa la Fornace</div>
+<div id="queueinfo" style="display:none;position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(10,28,50,.92);border:1px solid #7fd4ff;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;z-index:20"></div>
+<div id="expedinfo" style="display:none;position:fixed;bottom:150px;left:50%;transform:translateX(-50%);background:rgba(10,28,50,.92);border:1px solid #ffd75e;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;z-index:20"></div>
+
+<!-- MENU BASSO -->
+<nav id="bottombar">
+  <button data-tab="city"><span>🏙️</span>Città</button>
+  <button data-tab="missions"><span>📜</span>Missioni</button>
+  <button data-tab="shop"><span>⭐</span>Gelo Shop</button>
+  <button data-tab="rank"><span>🏆</span>Rank/Chat</button>
+  <button data-tab="settings"><span>⚙️</span>Server</button>
+</nav>
+
+<!-- POPUP EDIFICIO -->
+<div class="modal" id="m-building"><div class="sheet">
+  <h2 id="b-title">Edificio</h2>
+  <p class="sub" id="b-desc"></p>
+  <div class="reminder" id="b-cost"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="document.getElementById('m-building').classList.remove('open')">Chiudi</button>
+    <button class="btn gold" id="b-speed">⚡ 3⭐</button>
+    <button class="btn" id="b-up">Costruisci</button>
+  </div>
+</div></div>
+
+<!-- SHOP STELLE -->
+<div class="modal" id="m-shop"><div class="sheet">
+  <h2>⭐ Negozio Gelo Infinito</h2>
+  <p class="sub">Spendi le <b>Stelle del Gelo Infinito</b>: le guadagni con missioni, spedizioni e fornace.</p>
+  <div id="shop-items"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="document.getElementById('m-shop').classList.remove('open')">Chiudi</button></div>
+</div></div>
+
+<!-- MISSIONI + AZIONI -->
+<div class="modal" id="m-help"><div class="sheet">
+  <h2>📜 Missioni & Spedizioni</h2>
+  <p class="sub">Come in Whiteout Survival: costruisci, esplora la tormenta, addestra l'esercito.</p>
+  <div class="bcard"><div class="e">🧭</div><div class="inf"><b>Spedizione nella tormenta</b><div>Costa 20🍖 · dura 30s · bottino + ⭐2 Stelle del Gelo</div></div><button class="btn" id="btn-exped">Via!</button></div>
+  <div class="bcard"><div class="e">🛡️</div><div class="inf"><b>Addestra truppe</b><div>Richiede Caserma · 30🍖+10🔩 · 25s</div></div><button class="btn" id="btn-train">Addestra</button></div>
+  <div class="reminder">⭐ <b>Stelle del Gelo Infinito</b> = valuta rara del gioco.<br>Si ottengono da missioni, spedizioni, fornace liv. 3/5 e classifica server.<br>Servono per velocizzare ⚡ e comprare risorse nello Shop.</div>
+  <div class="reminder">🔥 <b>Freddo:</b> di notte e in tormenta la produzione cala. Potenzia la Fornace e brucia ⬛ carbone per scaldare la città!</div>
+  <div class="btnrow"><button class="btn ghost" onclick="document.getElementById('m-help').classList.remove('open')">Chiudi</button></div>
+</div></div>
+
+<!-- RANK + CHAT -->
+<div class="modal" id="m-rank"><div class="sheet">
+  <h2>🏆 Classifica server privato</h2>
+  <p class="sub">Giocatori salvati sul <b>tuo PC</b> (stesso WiFi).</p>
+  <div id="rank-list"></div>
+  <h2 style="margin-top:12px">💬 Chat</h2>
+  <div id="chatbox"></div>
+  <div style="display:flex;gap:6px"><input id="chat-input" placeholder="Scrivi…" maxlength="200"><button class="btn" id="btn-chat-send">➤</button></div>
+  <div class="btnrow"><button class="btn ghost" onclick="document.getElementById('m-rank').classList.remove('open')">Chiudi</button></div>
+</div></div>
+
+<!-- IMPOSTAZIONI SERVER ★ PROMEMORIA IP ★ -->
+<div class="modal" id="m-settings"><div class="sheet">
+  <h2>⚙️ Server privato</h2>
+  <p class="sub">Collega il gioco al <b>server sul tuo PC</b>.</p>
+  <div class="reminder">📝 <b>PROMEMORIA — DOVE METTERE L'IP:</b><br>
+    1. Sul PC: CMD → <b>ipconfig</b> → copia "Indirizzo IPv4" (es. 192.168.1.50)<br>
+    2. Incollalo qui sotto 👇 e premi SALVA<br>
+    3. Oppure cambialo nel file <b>js/config.js</b> → riga <b>SERVER_IP</b><br>
+    4. PC e telefono devono stare sullo <b>stesso WiFi</b>!</div>
+  <label>🖥️ IP locale del tuo PC</label>
+  <input id="set-ip" value="192.168.1.100">
+  <div style="height:8px"></div>
+  <label>🧍 Nome giocatore</label>
+  <input id="set-name" maxlength="20">
+  <div class="reminder">Stato: <span id="set-url"></span><br><span id="motd"></span></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="document.getElementById('m-settings').classList.remove('open')">Chiudi</button>
+    <button class="btn" id="btn-save-ip">💾 SALVA IP</button>
+  </div>
+</div></div>
+
+<div id="toast"></div>
+
+<script src="js/config.js"></script>
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
