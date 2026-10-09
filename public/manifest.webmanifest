@@ -1,0 +1,26 @@
+{
+  "name": "Preventivi Smart — follow-up preventivi",
+  "short_name": "Preventivi",
+  "description": "Ricontatta i clienti, gestisci preventivi, misura il valore in sospeso.",
+  "start_url": "/login",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f172a",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

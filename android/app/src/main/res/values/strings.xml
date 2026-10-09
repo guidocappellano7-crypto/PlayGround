@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Preventivi Smart</string>
+    <string name="title_activity_main">Preventivi Smart</string>
+    <string name="package_name">it.preventivismart.app</string>
+    <string name="custom_url_scheme">it.preventivismart.app</string>
+</resources>
